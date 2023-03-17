@@ -1,0 +1,52 @@
+{
+  "name": "solid-server-template",
+  "version": "1.0.0",
+  "description": "An extremely compact buildless server template for solid-js (based on next.js). Includes ESM HMR, file routing, getServersideProps.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-vm-modules index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wethrift/solid-server-template.git"
+  },
+  "keywords": [
+    "solid",
+    "solidjs",
+    "next",
+    "nextjs",
+    "tiny",
+    "buildless"
+  ],
+  "author": "Matt Way",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wethrift/solid-server-template/issues"
+  },
+  "homepage": "https://github.com/wethrift/solid-server-template#readme",
+  "dependencies": {
+    "@babel/core": "^7.21.3",
+    "@emotion/css": "^11.10.6",
+    "@emotion/server": "^11.10.0",
+    "@fastify/compress": "^6.2.0",
+    "@fastify/static": "^6.9.0",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-replace": "^5.0.2",
+    "@solidjs/meta": "^0.28.2",
+    "babel-plugin-list-imports": "^1.0.1",
+    "babel-preset-solid": "^1.6.13",
+    "chokidar": "^3.5.3",
+    "fastify": "^4.14.1",
+    "fastify-sse": "^1.0.0",
+    "module-from-string": "^3.3.0",
+    "pino-pretty": "^10.0.0",
+    "rollup": "^3.19.1",
+    "solid-js": "^1.6.15",
+    "solid-refresh": "^0.5.2",
+    "terser": "^5.16.6"
+  }
+}
