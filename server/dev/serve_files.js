@@ -1,12 +1,16 @@
 import path from 'path'
+import fs from 'fs'
 import { fileURLToPath } from 'url'
 import { transformFileAsync } from '@babel/core'
 import createImportLister from 'babel-plugin-list-imports'
-import solidRefresh from 'solid-refresh/babel.js'
+import solidRefresh from 'solid-refresh/babel'
 import { registerModule, getLastUpdated } from './module_graph.js'
 
 const CDN_PREFIX = 'https://esm.sh/'
 const CDN_DEV_QUERY = '?dev'
+const SOLID_VERSION = JSON.parse(fs.readFileSync('package.json')).dependencies[
+  'solid-js'
+]
 
 const isRelativeImport = importPath => {
   return importPath.startsWith('.') || importPath.startsWith('/')
@@ -31,12 +35,12 @@ const ModuleImportTransform = () => {
             `/${absPath.replaceAll('\\', '/')}`
           )
           if (lastUpdated) {
-            source.value = `${source.value}?mtime=${lastUpdated}`
+            source.value = `${source.value}?time=${lastUpdated}`
           }
         } else {
           if (!source.value.startsWith(CDN_PREFIX)) {
             // the suffix below is a hack to enforce a single solid-js version due to an esm.sh dependency bug (to allow hmr to work)
-            source.value = `${CDN_PREFIX}${source.value}${CDN_DEV_QUERY}&deps=solid-js@1.6.11`
+            source.value = `${CDN_PREFIX}${source.value}${CDN_DEV_QUERY}&deps=solid-js@${SOLID_VERSION}`
           }
         }
       },
@@ -44,8 +48,8 @@ const ModuleImportTransform = () => {
   }
 }
 
-const hmrPrefix = filePath =>
-  `import * as __HMR__ from '/server/dev/hmr_client.js'\nimport.meta.hot = __HMR__.register('${filePath}');`
+const hmrPrefix = () =>
+  `import * as __HMR__ from '/server/dev/hmr_client.js'\nimport.meta.hot = __HMR__.register(import.meta.url);`
 
 // this handler transpiles and serves single js filesystem files
 // including any related node_modules etc.
@@ -76,7 +80,7 @@ export const serveFilesHandler = async (request, reply) => {
 
   let result = code
   if (!cleanPath.startsWith('/server')) {
-    result = hmrPrefix(request.url.split('?')[0]) + code
+    result = hmrPrefix() + code
   }
   reply.type('application/javascript').send(result)
 }

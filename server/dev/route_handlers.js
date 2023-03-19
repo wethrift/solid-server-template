@@ -51,7 +51,8 @@ function renderPage(pageData) {
   return `
   <html>
     <head>
-      <link id="global_stylesheet" rel="stylesheet" type="text/css" href="globals.css?version=#" media="screen"/>
+      <meta charset="utf-8"/>
+      <link id="global_stylesheet" rel="stylesheet" type="text/css"  href="globals.css?version=#" media="screen"/>
     </head>
     <body>
       <div id="root"/>

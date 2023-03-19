@@ -1,34 +1,53 @@
-const acceptCallbacks = {}
-const disposeCallbacks = {}
+const registeredModules = {}
 
-export function register(path) {
-  if (!acceptCallbacks[path]) {
-    console.log('[HMR]: registering', path)
-    acceptCallbacks[path] = true
+export function register(fullURL) {
+  const id = new URL(fullURL).pathname
+  const existing = registeredModules[id]
+  if (existing) {
+    existing.locked = true
+    existing.disposeCallbacks.map(cb => cb())
+    return existing
   }
-  return {
-    accept(_mod) {
-      acceptCallbacks[path] = _mod
+
+  console.log('[HMR]: registering', id)
+  registeredModules[id] = {
+    id,
+    data: {},
+    locked: false,
+    accepted: false,
+    acceptCallbacks: [],
+    disposeCallbacks: [],
+    dispose(cb) {
+      this.disposeCallbacks.push(cb)
     },
     invalidate() {
       location.reload()
     },
-    dispose(callback) {
-      disposeCallbacks[path] = callback
+    accept(cb) {
+      if (this.locked) {
+        return
+      }
+      this.accepted = true
+      this.acceptCallbacks.push(cb)
     },
-    data: {},
   }
+  return registeredModules[id]
 }
 
 async function updateJS(path, depMap, root) {
-  const callback = acceptCallbacks[path]
-  if (callback && typeof callback === 'function') {
-    const module = await import(path + '?mtime=' + Date.now())
-    callback({ module })
-    console.log('[HMR]: updated', path, root ? `-> change in ${root}` : '')
-  } else {
-    for (const dep of Object.keys(depMap[path] || {})) {
-      await updateJS(dep, depMap, root || path)
+  const moduleState = registeredModules[path]
+  if (!moduleState) {
+    return
+  }
+  for (const callback of moduleState.acceptCallbacks) {
+    if (callback && typeof callback === 'function') {
+      const module = await import(path + '?time=' + Date.now())
+      callback({ module })
+      console.log('[HMR]: updated', path, root ? `-> change in ${root}` : '')
+    } else {
+      for (const dep of Object.keys(depMap[path] || {})) {
+        await updateJS(dep, depMap, root || path)
+      }
     }
   }
 }

@@ -1,3 +1,4 @@
+// Run the getServerSide function on the page
 import fs from 'fs'
 
 export default async function getServerSideProps(filePath, request) {
