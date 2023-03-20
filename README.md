@@ -52,4 +52,4 @@ If you want to use traditional css, or a combination, there is a globals.css fil
 
 # Credits
 
-This template was built [@wethrift](https://www.wethrift.com) by [@matt-way](https://github.com/matt-way)
+This template was built [@wethrift](https://www.wethrift.com)
