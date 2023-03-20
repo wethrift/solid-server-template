@@ -1,6 +1,6 @@
 # solid-server-template
 
-This is a buildless Node.js server template designed for use with Solid JS. It provides a compact solution (~400 lines of code) for building and maintaining a Next.js-inspired server. It includes file routing, server-side rendering with a getServerSideProps equivalent, and ESM HMR (Hot Module Replacement) thanks to esm.sh.
+This is a buildless Node.js server template designed for use with Solid JS. It provides a compact solution (~400 lines of code) for building and maintaining a Next.js-inspired server. It includes file routing, server-side rendering with a getServerSideProps equivalent, and ESM HMR (Hot Module Replacement) thanks to esm.sh, as well as support for emotion/vanilla css.
 
 # Usage
 
