@@ -13,7 +13,7 @@ import {
   apiHandler as prodApiHandler,
 } from './server/prod/route_handlers.js'
 import { startHMRServer } from './server/dev/hmr_server.js'
-import filesToRoutes from './server/utils/files_to_routes.js'
+import globToRoutes from 'glob-to-routes'
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production'
 const protectedRoutes = ['/404', '/500']
@@ -44,7 +44,7 @@ const start = async () => {
       apiHandler = devApiHandler
     }
 
-    const routes = await filesToRoutes('./routes')
+    const routes = await globToRoutes('./routes')
     for (const { route, filePath } of routes) {
       if (route.startsWith('/api')) {
         await apiHandler(
