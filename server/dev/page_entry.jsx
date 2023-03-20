@@ -1,4 +1,4 @@
-import { render } from 'solid-js/web'
+import { render } from 'solid-js/web@~1.6.15'
 import { MetaProvider } from '@solidjs/meta'
 
 async function init() {
