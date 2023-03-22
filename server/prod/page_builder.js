@@ -10,9 +10,9 @@ import { importFromString } from 'module-from-string'
 import { minify } from 'terser'
 
 const pageCache = {}
-
 const TIME_RAN_MS = Date.now()
 const pkg = JSON.parse(fs.readFileSync(path.resolve('./package.json'), 'utf-8'))
+const packages = Object.keys(pkg.dependencies).map(p => p.split('/')[0])
 
 export const getPage = route => {
   return pageCache[route]
@@ -39,9 +39,7 @@ export const buildPage = async (route, pagePath) => {
       }),
     ],
     // make any node_module in package.json (and subfolders) external to supress warnings
-    external: Object.keys(pkg.dependencies).map(
-      dep => new RegExp(`^${dep}.*`, 'g')
-    ),
+    external: id => packages.includes(id.split('/')[0]),
   })
 
   const { output: serverOutput } = await serverBundle.generate({
