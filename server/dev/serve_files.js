@@ -37,8 +37,12 @@ const ModuleImportTransform = () => {
           }
         } else {
           if (!source.value.startsWith(CDN_PREFIX)) {
-            if (source.value.includes('solid-js/web')) {
-              source.value = `${CDN_PREFIX}solid-js@${SOLID_VERSION}/web${CDN_DEV_QUERY}`
+            if (source.value.includes('solid-js')) {
+              const addedVersion = source.value.replaceAll(
+                'solid-js',
+                `solid-js@${SOLID_VERSION}`
+              )
+              source.value = `${CDN_PREFIX}${addedVersion}${CDN_DEV_QUERY}`
             } else {
               // the suffix below enforces esm.sh to use the correct solid version for module dependencies (multi version causes hmr issues)
               source.value = `${CDN_PREFIX}${source.value}${CDN_DEV_QUERY}&deps=solid-js@${SOLID_VERSION}`
