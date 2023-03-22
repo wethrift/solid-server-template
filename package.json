@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "An extremely compact buildless server template for solid-js (based on next.js). Includes ESM HMR, file routing, getServersideProps.",
   "main": "index.js",
+  "engines": {
+    "node": ">=16.14"
+  },
   "type": "module",
   "scripts": {
     "start": "node --experimental-vm-modules index.js",
