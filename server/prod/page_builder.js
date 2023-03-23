@@ -58,12 +58,12 @@ export const buildPage = async (route, pagePath) => {
         preventAssignment: true,
         ___PAGE_PATH___: `../../${pagePath}`,
       }),
-      commonjs(),
-      nodeResolve(),
       babel({
         babelHelpers: 'bundled',
         presets: [['solid', { generate: 'dom', hydratable: true }]],
       }),
+      commonjs(),
+      nodeResolve(),
       replace({
         preventAssignment: true,
         'process.env.NODE_ENV': 'true',
